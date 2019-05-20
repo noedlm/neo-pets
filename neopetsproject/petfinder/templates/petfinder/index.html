@@ -1,0 +1,10 @@
+<div style="padding: 20px">This will be the search form</div>
+<form action="{% url 'petfinder:search' %}">
+    Pet type:<br>
+    <select id="pet-type">
+        {% for pet in pet_types %}
+            <option>{{ pet }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Search">
+</form>
