@@ -5,26 +5,39 @@ import json
 
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from .forms import PetSearchForm
 
 def index(request):
+    updatePetfinderToken()
     context = {
-        'pet_types': ['dog','cat','bird','rabbit'],
+        'pet_types': getAnimalTypes(),
+        'genders': ['male', 'female'],
+        'statuses': ['adoptable', 'adopted', 'found'],
     }
     return render(request, 'petfinder/index.html', context)
 
 def search(request):
+    print(request.GET)
     updatePetfinderToken()
     url = os.getenv('PETFINDER_BASE_URL') + '/v2/animals'
     request_headers = {
-        'Authorization': 'Bearer ' + os.environ['PETFINDER_ACCESS_TOKEN']
+        'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')
     }
     url_params = {
-        'type': 'dog'
+        'type': 'dog',
+        'name': 'duke'
     }
-
     response = requests.get(url, params=url_params, headers=request_headers)
-    return HttpResponse(response.text)
+    response = json.loads(response.text)
+    context = {
+        'pet_types': getAnimalTypes(),
+        'genders': ['male', 'female'],
+        'statuses': ['adoptable', 'adopted', 'found'],
+        'results': response
+    }
+    context.update(request.GET)
+    print(response)
+    return render(request, 'petfinder/index.html', context)
 
 
 #helpers
@@ -38,3 +51,13 @@ def updatePetfinderToken():
     response = requests.post(url, data=url_params)
     serializedText = json.loads(response.text)
     os.environ['PETFINDER_ACCESS_TOKEN'] = serializedText['access_token']
+
+def getAnimalTypes():
+    updatePetfinderToken()
+    types_url = os.getenv('PETFINDER_BASE_URL') + '/v2/types'
+    request_headers = {
+        'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')
+    }
+    response = requests.get(types_url, headers=request_headers)
+    response = json.loads(response.text)
+    return [t['name'] for t in response['types']]

@@ -1,0 +1,33 @@
+h1 {
+    color: #424242;
+}
+
+li {
+    text-decoration: none;
+}
+
+li a {
+    color: green;
+    text-decoration: none;
+}
+
+li a:hover {
+    font-weight: bold;
+}
+
+.padding-sm {
+    padding: 10px;
+}
+.padding-md {
+    padding: 20px;
+}
+.padding-lg {
+    padding: 30px;
+}
+
+.alert-dark {
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+

@@ -1,10 +1,52 @@
-<div style="padding: 20px">This will be the search form</div>
-<form action="{% url 'petfinder:search' %}">
-    Pet type:<br>
-    <select id="pet-type">
-        {% for pet in pet_types %}
-            <option>{{ pet }}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" value="Search">
-</form>
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% include 'nav.html' %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">Welcome to Neo-pets</h1>
+        <p class="lead">Search for your next companion</p>
+        <form action="{% url 'petfinder:search' %}">
+            <div class="form-group">
+                <input type="text" name="pet-name" class="form-control form-control-lg" placeholder="Animal name">
+            </div>
+            <div class="form-row align-items-center">
+                <div class="form-group col-3">
+                    {% for gender in genders %}
+                        <div class="form-check">
+                            <input class="form-check-input" name="gender" value="{{ gender }}" type="checkbox" id="{{ gender }}">
+                            <label class="form-check-label" for="{{ gender }}">
+                                {{ gender }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-3">
+                    {% for status in statuses %}
+                        <div class="form-check">
+                            <input class="form-check-input" name="status" value="{{ status }}" type="checkbox" id="{{ status }}">
+                            <label class="form-check-label" for="{{ status }}">
+                                {{ status }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <select name="pet-type" class="form-control" id="pet-type">
+                        {% for pet in pet_types %}
+                            <option value="{{ pet }}">{{ pet }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary mb2" value="Search">
+        </form>
+    </div>
+</div>
+<div>
+    results go here
+</div>
+{% endblock content %}
