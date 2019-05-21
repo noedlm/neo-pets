@@ -17,16 +17,15 @@ def index(request):
     return render(request, 'petfinder/index.html', context)
 
 def search(request):
-    print(request.GET)
     updatePetfinderToken()
     url = os.getenv('PETFINDER_BASE_URL') + '/v2/animals'
     request_headers = {
         'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')
     }
-    url_params = {
-        'type': 'dog',
-        'name': 'duke'
-    }
+    url_params = {}
+    for field in request.GET:
+        if request.GET.getlist(field) and request.GET.getlist(field)[0]:
+            url_params[field] = ','.join(request.GET.getlist(field))
     response = requests.get(url, params=url_params, headers=request_headers)
     response = json.loads(response.text)
     context = {
@@ -35,9 +34,7 @@ def search(request):
         'statuses': ['adoptable', 'adopted', 'found'],
         'results': response
     }
-    context.update(request.GET)
-    print(response)
-    return render(request, 'petfinder/index.html', context)
+    return render(request, 'petfinder/search.html', context)
 
 
 #helpers

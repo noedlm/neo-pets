@@ -1,5 +1,46 @@
-{% extends 'petfinder/index.html' %}
+
+
 {% block content %}
-teststatseta
+{% include 'petfinder/index.html' %}
+<div class="container container-fluid">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Size</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in results.animals %}
+            <tr>
+                <td><img src="{{ entry.photos.0.small }}" alt="pet image"></td>
+                <td>{{ entry.type }}</td>
+                <td>{{ entry.name }}</td>
+                <td>{{ entry.age }}</td>
+                <td>{{ entry.gender }}</td>
+                <td>{{ entry.size }}</td>
+                <td>{{ entry.description }}</td>
+                <td>{{ entry.status }}</td>
+                <td>
+                    <button class="btn">Add to Favorites</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if 'previous' in results.pagination %}
+    <a class="pagination-previous" href="#">Previous</a>
+{% endif %}
+{% if 'next' in results.pagination %}
+    <a class="pagination-next" href="#">Next</a>
+{% endif %}
 
 {% endblock content %}

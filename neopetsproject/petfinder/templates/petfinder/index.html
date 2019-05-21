@@ -9,10 +9,10 @@
         <p class="lead">Search for your next companion</p>
         <form action="{% url 'petfinder:search' %}">
             <div class="form-group">
-                <input type="text" name="pet-name" class="form-control form-control-lg" placeholder="Animal name">
+                <input type="text" name="name" class="form-control form-control-lg" placeholder="Animal name">
             </div>
             <div class="form-row align-items-center">
-                <div class="form-group col-3">
+                <div class="form-group col-md-3">
                     {% for gender in genders %}
                         <div class="form-check">
                             <input class="form-check-input" name="gender" value="{{ gender }}" type="checkbox" id="{{ gender }}">
@@ -22,10 +22,10 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="form-group col-3">
+                <div class="form-group col-md-3">
                     {% for status in statuses %}
                         <div class="form-check">
-                            <input class="form-check-input" name="status" value="{{ status }}" type="checkbox" id="{{ status }}">
+                            <input class="form-check-input" name="status" value="{{ status }}" type="radio" id="{{ status }}">
                             <label class="form-check-label" for="{{ status }}">
                                 {{ status }}
                             </label>
@@ -35,7 +35,7 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <select name="pet-type" class="form-control" id="pet-type">
+                    <select name="type" class="form-control" id="type">
                         {% for pet in pet_types %}
                             <option value="{{ pet }}">{{ pet }}</option>
                         {% endfor %}
@@ -45,8 +45,5 @@
             <input type="submit" class="btn btn-primary mb2" value="Search">
         </form>
     </div>
-</div>
-<div>
-    results go here
 </div>
 {% endblock content %}
