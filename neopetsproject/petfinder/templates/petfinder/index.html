@@ -6,13 +6,15 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-3">Welcome to Neo-pets</h1>
-        <p class="lead">Search for your next companion</p>
+        <p class="lead">Find your next best friend</p>
         <form action="{% url 'petfinder:search' %}">
-            <div class="form-group">
-                <input type="text" name="name" class="form-control form-control-lg" placeholder="Animal name">
+            <div class="form-row">
+                <div class="form-group col-9">
+                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Animal name">
+                </div>
             </div>
-            <div class="form-row align-items-center">
-                <div class="form-group col-md-3">
+            <div class="form-row">
+                <div class="col-3">
                     {% for gender in genders %}
                         <div class="form-check">
                             <input class="form-check-input" name="gender" value="{{ gender }}" type="checkbox" id="{{ gender }}">
@@ -22,7 +24,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="form-group col-md-3">
+                <div class="col-3">
                     {% for status in statuses %}
                         <div class="form-check">
                             <input class="form-check-input" name="status" value="{{ status }}" type="radio" id="{{ status }}">
@@ -32,14 +34,14 @@
                         </div>
                     {% endfor %}
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <select name="type" class="form-control" id="type">
-                        {% for pet in pet_types %}
-                            <option value="{{ pet }}">{{ pet }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="col-3">
+                    <div class="form-group">
+                        <select name="type" class="form-control" id="type">
+                            {% for pet in pet_types %}
+                                <option value="{{ pet }}">{{ pet }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
             </div>
             <input type="submit" class="btn btn-primary mb2" value="Search">

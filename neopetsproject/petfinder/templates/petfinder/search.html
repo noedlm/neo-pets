@@ -1,4 +1,63 @@
 
+{% csrf_token %}
+{% block javascript %}
+<script>
+    function favorite(element) {
+        var csrftoken = getCookie('csrftoken');
+        console.log(csrftoken);
+        console.log(element.name);
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: '/' + element.name + '/pet/',
+            dataType: 'json',
+            data: {
+                id: element.id
+            },
+            success: function() {
+                alert("success!!");
+            }
+        });
+        {% comment %}
+        $.post(element.name + '/pet/',
+            {id: element.id},
+            function(data, status) {
+                alert("Data: " + data + "\nStatus: " + status);
+            }
+        );
+        {% endcomment %}
+        element.name = element.name == "add" ? "delete" : "add";
+    }
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+</script>
+{% endblock javascript %}
 
 {% block content %}
 {% include 'petfinder/index.html' %}
@@ -22,7 +81,7 @@
             <tr>
                 <td>
                     <a href="{{ entry.url }}" target="_blank">
-                        <img src="{{ entry.photos.0.small }}" alt="pet image">
+                        <img class="pet-image" src="{{ entry.photos.0.small }}" onerror="this.src='http://placekitten.com/100/150'">
                     </a>
                 </td>
                 <td>{{ entry.type }}</td>
@@ -30,16 +89,21 @@
                 <td>{{ entry.age }}</td>
                 <td>{{ entry.gender }}</td>
                 <td>{{ entry.size }}</td>
-                <td>{{ entry.description }}</td>
+                <td class="break-word">{{ entry.description }}</td>
                 <td>{{ entry.status }}</td>
                 <td>
-                    <button class="btn">Add to Favorites</button>
+                {% if entry.id in favorites %}
+                    <button class="btn" onclick="favorite(this)" name="delete" id="{{ entry.id }}">Remove Favorite</button>
+                {% else %}
+                    <button class="btn" onclick="favorite(this)" name="add" id="{{ entry.id }}">Add to Favorites</button>
+                {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
+{% comment %} TODO: Finish implementing pagination, still need to figure out how {% endcomment %}
 {% if 'previous' in results.pagination %}
     <a class="pagination-previous" href="#">Previous</a>
 {% endif %}
