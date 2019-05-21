@@ -6,6 +6,7 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import PetSearchForm
+from .models import Pet
 
 def index(request):
     updatePetfinderToken()
@@ -28,11 +29,14 @@ def search(request):
             url_params[field] = ','.join(request.GET.getlist(field))
     response = requests.get(url, params=url_params, headers=request_headers)
     response = json.loads(response.text)
+    #favorites = Pet.objects.all()
+    
     context = {
         'pet_types': getAnimalTypes(),
         'genders': ['male', 'female'],
         'statuses': ['adoptable', 'adopted', 'found'],
-        'results': response
+        'results': response,
+        'favorites': []
     }
     return render(request, 'petfinder/search.html', context)
 

@@ -3,7 +3,7 @@
 {% block content %}
 {% include 'petfinder/index.html' %}
 <div class="container container-fluid">
-    <table class="table">
+    <table class="table" style="vertical-align: center">
         <thead>
             <tr>
                 <th>Image</th>
@@ -20,7 +20,11 @@
         <tbody>
         {% for entry in results.animals %}
             <tr>
-                <td><img src="{{ entry.photos.0.small }}" alt="pet image"></td>
+                <td>
+                    <a href="{{ entry.url }}" target="_blank">
+                        <img src="{{ entry.photos.0.small }}" alt="pet image">
+                    </a>
+                </td>
                 <td>{{ entry.type }}</td>
                 <td>{{ entry.name }}</td>
                 <td>{{ entry.age }}</td>
