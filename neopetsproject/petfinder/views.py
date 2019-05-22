@@ -30,33 +30,39 @@ def search(request):
     response = requests.get(url, params=url_params, headers=request_headers)
     response = json.loads(response.text)
     favorites = Pet.objects.all()
-    favorites = [f.id for f in favorites]
-    print(favorites)
+    favorites = [f.animal_id for f in favorites]
 
     context = {
         'pet_types': getAnimalTypes(),
         'genders': ['male', 'female'],
         'statuses': ['adoptable', 'adopted', 'found'],
         'results': response,
-        'favorites': []
+        'favorites': favorites
     }
     return render(request, 'petfinder/search.html', context)
 
 def addFavorite(request):
     if request.POST and request.is_ajax():
         updatePetfinderToken()
-        # TODO: make api call to get animal info, curate data and insert into petfinder_pet table, gg.
         response = requests.get(os.getenv('PETFINDER_BASE_URL')+'/v2/animals/'+request.POST['id'], headers={'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')})
         response = json.loads(response.text)
+        if not Pet.objects.filter(animal_id=response['animal']['id']).exists():
+            favorite = Pet(animal_id=response['animal']['id'], animal_type=response['animal']['type'], detail_link=response['animal']['url'], image=response['animal']['photos'][0]['small'], age=response['animal']['age'], gender=response['animal']['gender'], name=response['animal']['name'], zipcode=response['animal']['contact']['address']['postcode'])
+            favorite.save()
 
-    return JsonResponse({'data': 'success'})
+            return JsonResponse({'message': 'Pet added to favorites'})
+
+        return JsonResponse({'message': 'Pet already exists in favorites'})
 
 def deleteFavorite(request):
     if request.POST and request.is_ajax():
-        print(request.POST)
-        pass
+        try:
+            favorite = Pet.objects.get(animal_id=request.POST['id'])
+            favorite.delete()
+        except DoesNotExistError:
+            return JsonResponse({'message': 'Pet is not favorited, no action required'})
 
-    return JsonResponse("{'key': 'test'}")
+    return JsonResponse({'message': 'Pet removed from favorites'})
 
 
 # helpers

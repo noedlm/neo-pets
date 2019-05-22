@@ -4,8 +4,6 @@
 <script>
     function favorite(element) {
         var csrftoken = getCookie('csrftoken');
-        console.log(csrftoken);
-        console.log(element.name);
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -20,19 +18,19 @@
             data: {
                 id: element.id
             },
-            success: function() {
-                alert("success!!");
+            success: function(response) {
+                console.log(response);
             }
         });
-        {% comment %}
-        $.post(element.name + '/pet/',
-            {id: element.id},
-            function(data, status) {
-                alert("Data: " + data + "\nStatus: " + status);
-            }
-        );
-        {% endcomment %}
-        element.name = element.name == "add" ? "delete" : "add";
+        if (element.name == "add") {
+            element.className = "btn btn-danger";
+            element.name = "delete";
+            element.innerHTML = "Remove favorite";
+        } else {
+            element.className = "btn btn-success";
+            element.name = "add";
+            element.innerHTML = "Add to favorites";
+        }
     }
 
     function getCookie(name) {
@@ -41,7 +39,6 @@
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
@@ -52,7 +49,6 @@
     }
 
     function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
 
@@ -93,9 +89,9 @@
                 <td>{{ entry.status }}</td>
                 <td>
                 {% if entry.id in favorites %}
-                    <button class="btn" onclick="favorite(this)" name="delete" id="{{ entry.id }}">Remove Favorite</button>
+                    <button class="btn btn-danger" onclick="favorite(this)" name="delete" id="{{ entry.id }}">Remove Favorite</button>
                 {% else %}
-                    <button class="btn" onclick="favorite(this)" name="add" id="{{ entry.id }}">Add to Favorites</button>
+                    <button class="btn btn-success" onclick="favorite(this)" name="add" id="{{ entry.id }}">Add to Favorites</button>
                 {% endif %}
                 </td>
             </tr>
