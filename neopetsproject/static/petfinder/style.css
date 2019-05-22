@@ -15,6 +15,10 @@ li a:hover {
     font-weight: bold;
 }
 
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
 .break-word {
     word-break: break-all;
 }
