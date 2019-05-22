@@ -10,7 +10,7 @@
         <form action="{% url 'petfinder:search' %}">
             <div class="form-row">
                 <div class="form-group col-9">
-                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Animal name">
+                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Animal name" value="{{ request.GET.name }}">
                 </div>
             </div>
             <div class="form-row">

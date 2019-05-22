@@ -1,4 +1,6 @@
 
+{% extends 'base.html' %}
+
 {% csrf_token %}
 {% block javascript %}
 <script>
@@ -22,15 +24,7 @@
                 console.log(response);
             }
         });
-        if (element.name == "add") {
-            element.className = "btn btn-danger";
-            element.name = "delete";
-            element.innerHTML = "Remove favorite";
-        } else {
-            element.className = "btn btn-success";
-            element.name = "add";
-            element.innerHTML = "Add to favorites";
-        }
+        $('#row-'+element.id).remove()
     }
 
     function getCookie(name) {
@@ -55,7 +49,12 @@
 {% endblock javascript %}
 
 {% block content %}
-{% include 'petfinder/index.html' %}
+{% include 'nav.html' %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">Google Maps placeholder</h1>
+    </div>
+</div>
 <div class="container container-fluid">
     <table class="table" style="vertical-align: center">
         <thead>
@@ -72,14 +71,14 @@
             </tr>
         </thead>
         <tbody>
-        {% for entry in results.animals %}
-            <tr style="vertical-align: center">
+        {% for entry in favorites %}
+            <tr id="row-{{ entry.animal_id }}">
                 <td>
-                    <a href="{{ entry.url }}" target="_blank">
-                        <img class="pet-image" src="{{ entry.photos.0.small }}" onerror="this.src='http://placekitten.com/100/150'">
+                    <a href="{{ entry.detail_link }}" target="_blank">
+                        <img class="pet-image" src="{{ entry.image }}" onerror="this.src='http://placekitten.com/100/150'">
                     </a>
                 </td>
-                <td>{{ entry.type }}</td>
+                <td>{{ entry.animal_type }}</td>
                 <td>{{ entry.name }}</td>
                 <td>{{ entry.age }}</td>
                 <td>{{ entry.gender }}</td>
@@ -87,11 +86,7 @@
                 <td class="break-word">{{ entry.description }}</td>
                 <td>{{ entry.status }}</td>
                 <td>
-                {% if entry.id in favorites %}
-                    <button class="btn btn-danger" onclick="favorite(this)" name="delete" id="{{ entry.id }}">Remove Favorite</button>
-                {% else %}
-                    <button class="btn btn-success" onclick="favorite(this)" name="add" id="{{ entry.id }}">Add to Favorites</button>
-                {% endif %}
+                    <button class="btn btn-danger" onclick="favorite(this)" name="delete" id="{{ entry.animal_id }}">Remove Favorite</button>
                 </td>
             </tr>
         {% endfor %}

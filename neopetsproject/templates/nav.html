@@ -1,5 +1,12 @@
 <div style="text-align: right; padding: 15px;">
-    <a href="#" class="login-button" style="padding: 4px 8px;">
-        Favorites
-    </a>
+    <div style="float: left">
+        <a href="{% url 'petfinder:index' %}" class="login-button" style="padding: 4px 8px;">
+            Home
+        </a>
+    </div>
+    <div>
+        <a href="{% url 'petfinder:favorites' %}" class="login-button" style="padding: 4px 8px;">
+            Favorites
+        </a>
+    </div>
 </div>

@@ -47,7 +47,7 @@ def addFavorite(request):
         response = requests.get(os.getenv('PETFINDER_BASE_URL')+'/v2/animals/'+request.POST['id'], headers={'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')})
         response = json.loads(response.text)
         if not Pet.objects.filter(animal_id=response['animal']['id']).exists():
-            favorite = Pet(animal_id=response['animal']['id'], animal_type=response['animal']['type'], detail_link=response['animal']['url'], image=response['animal']['photos'][0]['small'], age=response['animal']['age'], gender=response['animal']['gender'], name=response['animal']['name'], zipcode=response['animal']['contact']['address']['postcode'])
+            favorite = Pet(animal_id=response['animal']['id'], animal_type=response['animal']['type'], detail_link=response['animal']['url'], image=response['animal']['photos'][0]['small'], age=response['animal']['age'], gender=response['animal']['gender'], size=response['animal']['size'],  name=response['animal']['name'], description=response['animal']['description'], status=response['animal']['status'], zipcode=response['animal']['contact']['address']['postcode'])
             favorite.save()
 
             return JsonResponse({'message': 'Pet added to favorites'})
@@ -64,10 +64,16 @@ def deleteFavorite(request):
 
     return JsonResponse({'message': 'Pet removed from favorites'})
 
+def listFavorites(request):
+    favorites = Pet.objects.all()
+    context = {
+        'favorites': favorites
+    }
+    return render(request, 'petfinder/favorites.html', context)
+
 
 # helpers
 def updatePetfinderToken():
-    # TODO: store time of last token fetch, if time delta from last taken to now() is > 3590 seconds, request another one
     url = os.getenv('PETFINDER_BASE_URL') + '/v2/oauth2/token'
     url_params = {
         'grant_type': 'client_credentials',
@@ -76,6 +82,7 @@ def updatePetfinderToken():
     }
     response = requests.post(url, data=url_params)
     serializedText = json.loads(response.text)
+
     os.environ['PETFINDER_ACCESS_TOKEN'] = serializedText['access_token']
 
 def getAnimalTypes():
