@@ -23,6 +23,10 @@ li a:hover {
     word-break: break-all;
 }
 
+.no-border-radius {
+    border-radius: 0;
+}
+
 .padding-sm {
     padding: 10px;
 }

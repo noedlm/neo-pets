@@ -10,7 +10,7 @@
         <form action="{% url 'petfinder:search' %}">
             <div class="form-row">
                 <div class="form-group col-9">
-                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Animal name" value="{{ request.GET.name }}">
+                    <input type="text" name="name" class="form-control form-control-lg no-border-radius" placeholder="Animal name" value="{{ request.GET.name }}">
                 </div>
             </div>
             <div class="form-row">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-3">
                     <div class="form-group">
-                        <select name="type" class="form-control" id="type">
+                        <select name="type" class="form-control form-control-lg no-border-radius" id="type">
                             {% for pet in pet_types %}
                                 <option value="{{ pet }}">{{ pet }}</option>
                             {% endfor %}
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary mb2" value="Search">
+            <input type="submit" class="btn btn-primary mb2 no-border-radius" value="Search">
         </form>
     </div>
 </div>
