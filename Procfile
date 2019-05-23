@@ -1,1 +1,1 @@
-web: gunicorn neopetsproject.wsgi
+web: gunicorn neopetsproject.wsgi --log-file -
