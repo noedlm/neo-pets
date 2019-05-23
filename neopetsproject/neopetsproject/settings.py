@@ -34,7 +34,6 @@ except NameError:
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = '1je(m)ngo+%mzpvnfs1s4h^-&15e9ok^+#)^yq-@xdf8pj^(#s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('PRODUCTION', True)
