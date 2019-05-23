@@ -63,7 +63,7 @@ def deleteFavorite(request):
         try:
             favorite = Pet.objects.get(animal_id=request.POST['id'])
             favorite.delete()
-        except DoesNotExistError:
+        except Exception:
             return JsonResponse({'message': 'Pet is not favorited, no action required'})
 
     return JsonResponse({'message': 'Pet removed from favorites'})
