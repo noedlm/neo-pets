@@ -46,8 +46,12 @@ def addFavorite(request):
         updatePetfinderToken()
         response = requests.get(os.getenv('PETFINDER_BASE_URL')+'/v2/animals/'+request.POST['id'], headers={'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')})
         response = json.loads(response.text)
+        if len(response['animal']['photos']):
+            default_image = response['animal']['photos'][0]['small']
+        else:
+            default_image = 'https://placekitten.com/100/150'
         if not Pet.objects.filter(animal_id=response['animal']['id']).exists():
-            favorite = Pet(animal_id=response['animal']['id'], animal_type=response['animal']['type'], detail_link=response['animal']['url'], image=response['animal']['photos'][0]['small'], age=response['animal']['age'], gender=response['animal']['gender'], size=response['animal']['size'],  name=response['animal']['name'], description=response['animal']['description'], status=response['animal']['status'], zipcode=response['animal']['contact']['address']['postcode'])
+            favorite = Pet(animal_id=response['animal']['id'], animal_type=response['animal']['type'], detail_link=response['animal']['url'], image=default_image, age=response['animal']['age'], gender=response['animal']['gender'], size=response['animal']['size'],  name=response['animal']['name'], description=response['animal']['description'], status=response['animal']['status'], zipcode=response['animal']['contact']['address']['postcode'])
             favorite.save()
 
             return JsonResponse({'message': 'Pet added to favorites'})
