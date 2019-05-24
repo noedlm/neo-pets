@@ -43,18 +43,32 @@ def search(request):
 def addFavorite(request):
     if request.POST and request.is_ajax():
         updatePetfinderToken()
-        response = requests.get(os.getenv('PETFINDER_BASE_URL')+'/v2/animals/'+request.POST['id'], headers={'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')})
+        response = requests.get(
+            os.getenv('PETFINDER_BASE_URL')+'/v2/animals/'+request.POST['id'],
+            headers={'Authorization': 'Bearer ' + os.getenv('PETFINDER_ACCESS_TOKEN')}
+        )
         response = json.loads(response.text)
         if len(response['animal']['photos']):
-            default_image = response['animal']['photos'][0]['small']
+            small_image = response['animal']['photos'][0]['small']
+            full_image = response['animal']['photos'][0]['full']
         else:
-            default_image = 'https://placekitten.com/100/150'
+            if response['animal']['type'] == 'Cat':
+                small_image = 'https://placekitten.com/100/150'
+                full_image = 'https://placekitten.com/400/550'
+            elif response['animal']['type'] == 'Dog':
+                small_image = 'https://placedog.net/100/150'
+                full_image = 'https://placedog.net/400/550'
+            else:
+                small_image = 'https://placedog.net/100x150'
+                full_image = 'https://placedog.net/400x550'
+
         if not Pet.objects.filter(animal_id=response['animal']['id']).exists():
             favorite = Pet(
                 animal_id=response['animal']['id'],
                 animal_type=response['animal']['type'],
                 detail_link=response['animal']['url'],
-                image=default_image,
+                image_small=small_image,
+                image_full=full_image,
                 age=response['animal']['age'],
                 gender=response['animal']['gender'],
                 size=response['animal']['size'],
