@@ -5,7 +5,6 @@ import json
 
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .forms import PetSearchForm
 from .models import Pet
 
 def index(request):
