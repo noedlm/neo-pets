@@ -4,6 +4,9 @@
 {% csrf_token %}
 {% block javascript %}
 <script>
+    var map;
+    var markers = {};
+
     function favorite(element) {
         var csrftoken = getCookie('csrftoken');
         $.ajaxSetup({
@@ -21,10 +24,47 @@
                 id: element.id
             },
             success: function(response) {
-                console.log(response);
+                markers[element.id].setMap(null);
             }
         });
         $('#row-'+element.id).remove()
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 38.3079827, lng: -97.8934871},
+            zoom: 4
+        });
+
+        var geocoder = new google.maps.Geocoder();
+        {% for entry in favorites %}
+            geocoder.geocode({
+                    address: '{{ entry.zipcode }}',
+                    region: 'US'
+                },
+                function(result, status) {
+                    if (status == 'OK' && result.length > 0) {
+                        var icon = {
+                            url: '{{ entry.image }}',
+                            scaledSize: new google.maps.Size(30,35),
+                            origin: new google.maps.Point(0,0),
+                            anchor: new google.maps.Point(0,0)
+                        };
+                        markers['{{ entry.animal_id }}'] = new google.maps.Marker({
+                            position: result[0].geometry.location,
+                            animation: google.maps.Animation.DROP,
+                            map: map,
+                            icon: icon,
+                            title: '{{ entry.name }}',
+                            url: '{{ entry.detail_link }}'
+                        });
+                        google.maps.event.addListener(markers['{{ entry.animal_id }}'], 'click', function() {
+                            window.open(this.url, '_blank');
+                        });
+                    }
+                }
+            );
+        {% endfor %}
     }
 
     function getCookie(name) {
@@ -50,11 +90,7 @@
 
 {% block content %}
 {% include 'nav.html' %}
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-3">Google Maps placeholder</h1>
-    </div>
-</div>
+<div id="map" style="width: 100%; height: 450px; margin-bottom: 30px;"></div>
 <div class="container container-fluid">
     <table class="table table-hover">
         <thead class="thead-dark">
@@ -93,12 +129,4 @@
         </tbody>
     </table>
 </div>
-{% comment %} TODO: Finish implementing pagination, still need to figure out how {% endcomment %}
-{% if 'previous' in results.pagination %}
-    <a class="pagination-previous" href="#">Previous</a>
-{% endif %}
-{% if 'next' in results.pagination %}
-    <a class="pagination-next" href="#">Next</a>
-{% endif %}
-
 {% endblock content %}

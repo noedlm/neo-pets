@@ -13,7 +13,7 @@ def index(request):
     context = {
         'pet_types': getAnimalTypes(),
         'genders': ['male', 'female'],
-        'statuses': ['adoptable', 'adopted', 'found'],
+        'statuses': ['adoptable', 'adopted', 'found']
     }
     return render(request, 'petfinder/index.html', context)
 
@@ -71,7 +71,8 @@ def deleteFavorite(request):
 def listFavorites(request):
     favorites = Pet.objects.all()
     context = {
-        'favorites': favorites
+        'favorites': favorites,
+        'google_api_key': os.getenv('GOOGLE_MAPS_API_KEY')
     }
     return render(request, 'petfinder/favorites.html', context)
 
