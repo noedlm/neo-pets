@@ -56,6 +56,5 @@ li a:hover {
     object-fit: cover;
 }
 .pet-image:hover {
-    opacity: 0.8;
     filter: saturate(200%);
 }
