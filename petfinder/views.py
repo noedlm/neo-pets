@@ -99,6 +99,7 @@ def listFavorites(request):
         'favorites': favorites,
         'google_api_key': os.getenv('GOOGLE_MAPS_API_KEY')
     }
+    
     return render(request, 'petfinder/favorites.html', context)
 
 
