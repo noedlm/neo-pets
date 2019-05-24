@@ -18,19 +18,19 @@
             data: {
                 id: element.id
             },
-            success: function(response) {
-                console.log(response);
+            success: function(response, status) {
+                if (element.name == "add") {
+                    element.className = "btn btn-danger no-border-radius";
+                    element.name = "delete";
+                    element.innerHTML = "Remove favorite";
+                } else {
+                    element.className = "btn btn-success no-border-radius";
+                    element.name = "add";
+                    element.innerHTML = "Add to favorites";
+                }
             }
         });
-        if (element.name == "add") {
-            element.className = "btn btn-danger";
-            element.name = "delete";
-            element.innerHTML = "Remove favorite";
-        } else {
-            element.className = "btn btn-success";
-            element.name = "add";
-            element.innerHTML = "Add to favorites";
-        }
+
     }
 
     function getCookie(name) {

@@ -50,7 +50,19 @@ def addFavorite(request):
         else:
             default_image = 'https://placekitten.com/100/150'
         if not Pet.objects.filter(animal_id=response['animal']['id']).exists():
-            favorite = Pet(animal_id=response['animal']['id'], animal_type=response['animal']['type'], detail_link=response['animal']['url'], image=default_image, age=response['animal']['age'], gender=response['animal']['gender'], size=response['animal']['size'],  name=response['animal']['name'], description=response['animal']['description'], status=response['animal']['status'], zipcode=response['animal']['contact']['address']['postcode'])
+            favorite = Pet(
+                animal_id=response['animal']['id'],
+                animal_type=response['animal']['type'],
+                detail_link=response['animal']['url'],
+                image=default_image,
+                age=response['animal']['age'],
+                gender=response['animal']['gender'],
+                size=response['animal']['size'],
+                name=response['animal']['name'],
+                description=response['animal']['description'],
+                status=response['animal']['status'],
+                zipcode=response['animal']['contact']['address']['postcode']
+            )
             favorite.save()
 
             return JsonResponse({'message': 'Pet added to favorites'})
