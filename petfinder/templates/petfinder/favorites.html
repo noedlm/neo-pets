@@ -98,7 +98,10 @@
                 <div class="card">
                     <div class="card-image" style="height: 12em">
                         <a href="{{ entry.detail_link }}" target="_blank">
-                            <img class="card-img-top pet-image" src="{{ entry.image_full }}" onerror="this.src='https://placekitten.com/400/550'">
+                            <img
+                                class="card-img-top pet-image"
+                                style="max-height: 100%; max-width: 100%; object-fit: cover;"
+                                src="{{ entry.image_full }}" onerror="this.src='https://placekitten.com/400/550'">
                         </a>
                     </div>
                     <div class="card-body">
