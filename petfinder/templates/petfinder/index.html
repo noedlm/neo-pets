@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-
+{% load customTags %}
 {% block content %}
 {% include 'nav.html' %}
 <div class="jumbotron jumbotron-fluid">
@@ -10,14 +10,25 @@
         <form action="{% url 'petfinder:search' %}">
             <div class="form-row">
                 <div class="form-group col-12 col-lg-9">
-                    <input type="text" name="name" class="form-control form-control-lg no-border-radius" placeholder="Animal name" value="{{ request.GET.name }}">
+                    <input
+                        type="text"
+                        name="name"
+                        class="form-control form-control-lg no-border-radius"
+                        placeholder="Animal name"
+                        value="{{ request.GET.name }}">
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-6 col-lg-3">
                     {% for gender in genders %}
                         <div class="form-check">
-                            <input class="form-check-input" name="gender" value="{{ gender }}" type="checkbox" id="{{ gender }}">
+                            <input
+                                class="form-check-input"
+                                name="gender"
+                                value="{{ gender }}"
+                                type="checkbox"
+                                id="{{ gender }}"
+                                {% if gender in request.GET|get_list:'gender' %}checked{% endif %}>
                             <label class="form-check-label" for="{{ gender }}">
                                 {{ gender }}
                             </label>
@@ -27,7 +38,13 @@
                 <div class="col-6 col-lg-3">
                     {% for status in statuses %}
                         <div class="form-check">
-                            <input class="form-check-input" name="status" value="{{ status }}" type="radio" id="{{ status }}">
+                            <input
+                                class="form-check-input"
+                                name="status"
+                                value="{{ status }}"
+                                type="radio"
+                                id="{{ status }}"
+                                {% if status == request.GET.status %}checked{% endif %}>
                             <label class="form-check-label" for="{{ status }}">
                                 {{ status }}
                             </label>
@@ -38,7 +55,11 @@
                     <div class="form-group">
                         <select name="type" class="form-control form-control-lg no-border-radius" id="type">
                             {% for pet in pet_types %}
-                                <option value="{{ pet }}">{{ pet }}</option>
+                                <option
+                                    value="{{ pet }}"
+                                    {% if pet == request.GET.type %}selected{% endif %}>
+                                    {{ pet }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
