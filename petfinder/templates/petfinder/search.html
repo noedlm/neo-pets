@@ -62,12 +62,9 @@
         {% for entry in results.animals %}
             <div class="col-12 col-md-6 col-lg-3 d-flex align-items-stretch p-2">
                 <div class="card">
-                    <div class="card-image" style="height: 12em">
+                    <div class="card-image">
                         <a href="{{ entry.url }}" target="_blank">
-                            <img
-                                class="card-img-top pet-image" 
-                                style="max-height: 100%; max-width: 100%; object-fit: cover;"
-                                src="{{ entry.photos.0.full }}" onerror="this.src='https://via.placeholder.com/400x550'">
+                            <img class="card-img-top pet-image" src="{{ entry.photos.0.full }}" onerror="this.src='https://via.placeholder.com/400x550'">
                         </a>
                     </div>
                     <div class="card-body">
@@ -78,7 +75,7 @@
                         <li class="list-group-item">{{ entry.type}} - {{ entry.status }}</li>
                         <li class="list-group-item">{{ entry.age}} - {{ entry.gender }} - {{ entry.size }}</li>
                     </ul>
-                    <div class="card-body text-center" style="flex-grow: inherit;">
+                    <div class="card-body text-center favorite-button">
                         {% if entry.id in favorites %}
                             <button class="btn btn-danger no-border-radius" onclick="favorite(this)" name="delete" id="{{ entry.id }}">
                                 Remove Favorite
