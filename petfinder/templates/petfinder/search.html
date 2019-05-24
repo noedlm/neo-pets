@@ -88,9 +88,13 @@
                 <td>{{ entry.status }}</td>
                 <td>
                 {% if entry.id in favorites %}
-                    <button class="btn btn-danger" onclick="favorite(this)" name="delete" id="{{ entry.id }}">Remove Favorite</button>
+                    <button class="btn btn-danger no-border-radius" onclick="favorite(this)" name="delete" id="{{ entry.id }}">
+                        Remove Favorite
+                    </button>
                 {% else %}
-                    <button class="btn btn-success" onclick="favorite(this)" name="add" id="{{ entry.id }}">Add to Favorites</button>
+                    <button class="btn btn-success no-border-radius" onclick="favorite(this)" name="add" id="{{ entry.id }}">
+                        Add to Favorites
+                    </button>
                 {% endif %}
                 </td>
             </tr>

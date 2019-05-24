@@ -122,7 +122,9 @@
                 <td class="break-word">{{ entry.description }}</td>
                 <td>{{ entry.status }}</td>
                 <td>
-                    <button class="btn btn-danger" onclick="favorite(this)" name="delete" id="{{ entry.animal_id }}">Remove Favorite</button>
+                    <button class="btn btn-danger no-border-radius" onclick="favorite(this)" name="delete" id="{{ entry.animal_id }}">
+                        Remove Favorite
+                    </button>
                 </td>
             </tr>
         {% endfor %}
