@@ -9,12 +9,12 @@
         <p class="lead">Find your next best friend</p>
         <form action="{% url 'petfinder:search' %}">
             <div class="form-row">
-                <div class="form-group col-9">
+                <div class="form-group col-12 col-lg-9">
                     <input type="text" name="name" class="form-control form-control-lg no-border-radius" placeholder="Animal name" value="{{ request.GET.name }}">
                 </div>
             </div>
             <div class="form-row">
-                <div class="col-3">
+                <div class="col-6 col-lg-3">
                     {% for gender in genders %}
                         <div class="form-check">
                             <input class="form-check-input" name="gender" value="{{ gender }}" type="checkbox" id="{{ gender }}">
@@ -24,7 +24,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="col-3">
+                <div class="col-6 col-lg-3">
                     {% for status in statuses %}
                         <div class="form-check">
                             <input class="form-check-input" name="status" value="{{ status }}" type="radio" id="{{ status }}">
@@ -34,7 +34,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-lg-3">
                     <div class="form-group">
                         <select name="type" class="form-control form-control-lg no-border-radius" id="type">
                             {% for pet in pet_types %}
