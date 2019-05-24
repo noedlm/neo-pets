@@ -59,8 +59,8 @@ def addFavorite(request):
                 small_image = 'https://placedog.net/100/150'
                 full_image = 'https://placedog.net/400/550'
             else:
-                small_image = 'https://placedog.net/100x150'
-                full_image = 'https://placedog.net/400x550'
+                small_image = 'https://via.placeholder.com/100x150'
+                full_image = 'https://via.placeholder.com/400x550'
 
         if not Pet.objects.filter(animal_id=response['animal']['id']).exists():
             favorite = Pet(
@@ -99,7 +99,7 @@ def listFavorites(request):
         'favorites': favorites,
         'google_api_key': os.getenv('GOOGLE_MAPS_API_KEY')
     }
-    
+
     return render(request, 'petfinder/favorites.html', context)
 
 
